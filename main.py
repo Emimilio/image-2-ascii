@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 
 
-CHAR_MAP = " .icoPO?@█"
+CHAR_MAP = np.array([" ", ".", "i", "c", "o", "P", "O", "?", "@"])
 V_IDX = 2
 
 def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
@@ -21,8 +21,8 @@ def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
     pixels_hsv = np.array(image_hsv)
     v_channel = pixels_hsv[:, :, V_IDX]
 
-    v_func = np.vectorize(get_ascii_char_for_brightness)
-    ascii_matrix = v_func(v_channel)
+    char_idxs = (v_channel / 255 * (len(CHAR_MAP) - 1)).astype(int)
+    ascii_matrix = np.array(CHAR_MAP)[char_idxs]
 
     return ascii_matrix, pixels_rgb
 
