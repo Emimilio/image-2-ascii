@@ -26,21 +26,20 @@ def resize_image(image: Image) -> Image:
 
     return image.resize((new_width, new_height), Image.LANCZOS)
 
-def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
+def convert_image_to_ascii(image: Image) -> npt.NDArray:
     image = image.convert("RGB") # convert to RGB just in case the image is HDR (4 dimensions)
     width, height = image.size
     
     image_hsv = image.convert("HSV")
     ascii_matrix = np.full((height, width), " ", dtype=object)
 
-    pixels_rgb = np.array(image)
     pixels_hsv = np.array(image_hsv)
     v_channel = pixels_hsv[:, :, V_IDX]
 
     char_idxs = (v_channel / 255 * (len(CHAR_MAP) - 1)).astype(int)
     ascii_matrix = CHAR_MAP[char_idxs]
 
-    return ascii_matrix, pixels_rgb
+    return ascii_matrix
 
 
 def detect_edges(image: Image) -> npt.NDArray:

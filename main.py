@@ -8,12 +8,13 @@ import numpy as np
 if __name__ == "__main__":
 
     base_dir = "./images"
-    filename = "flat_iron"
+    filename = "mario"
     image_path = f"{base_dir}/{filename}.png"
     output_path = f"{base_dir}/results/{filename}_ascii.png"
     image = Image.open(image_path)
     image = resize_image(image)
-    ascii_matrix, color_matrix = convert_image_to_ascii(image)
+    color_matrix = np.array(image)
+    ascii_matrix = convert_image_to_ascii(image)
 
     image = get_image_high_freq(image)
 
