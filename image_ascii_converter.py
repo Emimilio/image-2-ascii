@@ -12,13 +12,13 @@ GX_SOBEL = np.array([
     [-1, 0, 1],
     [-2, 0, 2],
     [-1, 0, 1]
-])
+]).astype(float)
 
 GY_SOBEL = np.array([
     [ 1,  2,  1],
     [ 0,  0,  0],
     [-1, -2, -1],
-])
+]).astype(float)
 
 def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
     image = image.convert("RGB") # convert to RGB just in case the image is HDR (4 dimensions)
@@ -40,34 +40,16 @@ def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
 
 
 def detect_edges(image: Image) -> npt.NDArray:
-    gray_image = np.array(image.convert("L")) # TEMPORARY
+    gray_image = np.array(image.convert("L")).astype(float) # TEMPORARY
     gx = convolve(gray_image, GX_SOBEL)
     gy = convolve(gray_image, GY_SOBEL)
     magnitude = np.sqrt(gx**2 + gy**2)
 
     teta = (np.atan2(gy, gx) / np.pi) * 0.5 + 0.5
 
-    edge_matrix = np.full(teta.shape, " ", dtype=object)
-    # 1. Horizontal: Near 0, 0.5, and 1.0
-    # Ranges: [0, 0.0625], [0.4375, 0.5625], [0.9375, 1.0]
-    edge_matrix[(teta < 0.0625) | 
-                ((teta >= 0.4375) & (teta <= 0.5625)) | 
-                (teta > 0.9375)] = "-"
-
-    # 2. Diagonal Forward (/): Near 0.125 and 0.625
-    # Ranges: [0.0625, 0.1875], [0.5625, 0.6875]
-    edge_matrix[((teta > 0.0625) & (teta < 0.1875)) | 
-                ((teta > 0.5625) & (teta < 0.6875))] = "/"
-
-    # 3. Vertical: Near 0.25 and 0.75
-    # Ranges: [0.1875, 0.3125], [0.6875, 0.8125]
-    edge_matrix[((teta >= 0.1875) & (teta <= 0.3125)) | 
-                ((teta >= 0.6875) & (teta <= 0.8125))] = "|"
-
-    # 4. Diagonal Backward (\): Near 0.375 and 0.875
-    # Ranges: [0.3125, 0.4375], [0.8125, 0.9375]
-    edge_matrix[((teta > 0.3125) & (teta < 0.4375)) | 
-                ((teta > 0.8125) & (teta < 0.9375))] = "\\"
+    edge_chars = np.array(["|", "\\", "-", "/", "|", "\\", "-", "/"])
+    indices = ((teta + 0.0625) * 8 % 8).astype(int)
+    edge_matrix = edge_chars[indices]
 
     threshold = 5
     edge_matrix[magnitude < threshold] = " "
@@ -81,7 +63,7 @@ def get_image_high_freq(image: Image) -> Image:
     filter to retain the high frequencies
     """
     gray_image = image.convert("L")
-    blurred = gray_image.filter(ImageFilter.GaussianBlur(radius=4))
+    blurred = gray_image.filter(ImageFilter.GaussianBlur(radius=0.5))
     return ImageChops.subtract(gray_image, blurred)
 
 
@@ -103,10 +85,10 @@ def save_as_colored_html(ascii_matrix, color_matrix, output_path="output.html"):
     for y in range(rows):
         line_chars = []
         for x in range(cols):
-            r, g, b = color_matrix[y, x]
+            # r, g, b = color_matrix[y, x]
             char = ascii_matrix[y, x]
             
-            line_chars.append(f'<span style="color: rgb({r},{g},{b});">{char}</span>')
+            line_chars.append(f'<span style="color: rgb({255},{255},{255});">{char}</span>')
         
         lines.append("".join(line_chars))
     
