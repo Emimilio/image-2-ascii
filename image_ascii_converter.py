@@ -2,10 +2,11 @@
 import numpy as np
 import numpy.typing as npt
 from PIL import Image, ImageFilter, ImageChops
-from scipy.ndimage import convolve
+from scipy.ndimage import convolve, gaussian_filter
+from skimage.filters import gaussian
 
 CHAR_MAP = np.array([" ", ".", "i", "c", "o", "P", "O", "?", "@"])
-EDGE_MAP = np.array(["_", "/", "|", "\\", "_"])
+EDGE_MAP = np.array(["|", "\\", "-", "/", "|", "\\", "-", "/"])
 V_IDX = 2
 
 GX_SOBEL = np.array([
@@ -44,21 +45,23 @@ def detect_edges(image: Image) -> npt.NDArray:
 
     teta = (np.atan2(gy, gx) / np.pi) * 0.5 + 0.5
 
-    edge_chars = np.array(["|", "\\", "-", "/", "|", "\\", "-", "/"])
-    indices = ((teta + 0.0625) * 8 % 8).astype(int)
-    edge_matrix = edge_chars[indices]
+    indices = ((teta + 0.0625) * len(EDGE_MAP) % len(EDGE_MAP)).astype(int)
+    edge_matrix = EDGE_MAP[indices]
 
-    threshold = 10
+    max_mag = magnitude.max()
+    threshold = max_mag * 0.5
     edge_matrix[magnitude < threshold] = " "
 
     return edge_matrix
 
+def get_high_freq(image: Image) -> Image:
+    im = np.array(image.convert("L"))
+    filtered = gaussian_filter(im, sigma=0.7, radius=1)
+    return Image.fromarray(im - filtered)
 
-def get_image_high_freq(image: Image) -> Image:
-    """
-    Image substracts the low frequencies by using a gaussian 
-    filter to retain the high frequencies
-    """
-    gray_image = image.convert("L")
-    blurred = gray_image.filter(ImageFilter.GaussianBlur(radius=2))
-    return ImageChops.difference(gray_image, blurred)
+def get_skimage_high_freq(image : Image) -> Image:
+    im = np.array(image)
+    filtered = (gaussian(im, sigma=0.6, channel_axis=-1) * 255).astype(np.uint8)
+
+    return Image.fromarray(im - filtered).convert("L")
+
