@@ -49,21 +49,26 @@ def detect_edges(image: Image) -> npt.NDArray:
     edge_matrix = EDGE_MAP[indices]
 
     max_mag = magnitude.max()
-    threshold = max_mag * 0.5
+    threshold = max_mag * 0.1
     edge_matrix[magnitude < threshold] = " "
 
     return edge_matrix
 
-def get_high_freq(image: Image) -> Image:
-    im = np.array(image.convert("L"))
-    filtered = gaussian_filter(im, sigma=0.7, radius=1)
-    return Image.fromarray(im - filtered)
+def get_difference_of_gaussian(image: Image, sigma=1) -> Image:
+    im = np.array(image.convert("L")).astype(float) / 255.0
+    
+    g_1 = gaussian(im, sigma=sigma)
+    g_2 = gaussian(im, sigma=1.6 * sigma) 
 
-def get_skimage_high_freq(image : Image) -> Image:
-    im = np.array(image)
-    filtered = (gaussian(im, sigma=4, channel_axis=-1) * 255).astype(np.uint8)
+    diff = g_1 - g_2
 
-    final = np.abs(im - filtered)
+    diff_min, diff_max = diff.min(), diff.max()
+    if diff_max - diff_min > 0:
+        diff_normalized = (diff - diff_min) / (diff_max - diff_min)
+    else:
+        diff_normalized = diff
 
-    return Image.fromarray(final.clip(0, 255).astype(np.uint8)).convert("L")
+    threshold_im = np.where(diff_normalized > 0.6, 1.0, 0.0)
+    DoG = (threshold_im * 255).astype(np.uint8)
 
+    return Image.fromarray(DoG)
