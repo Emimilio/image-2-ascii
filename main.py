@@ -1,6 +1,6 @@
 
 from PIL import Image 
-from image_ascii_converter import convert_image_to_ascii, detect_edges, resize_image, get_difference_of_gaussian
+from image_ascii_converter import convert_image_to_ascii, detect_edges, resize_image, get_difference_of_gaussian 
 from image_exporter import save_ascii_as_image, save_as_colored_html
 import numpy as np
 
@@ -11,18 +11,10 @@ if __name__ == "__main__":
     filename = "mario"
     image_path = f"{base_dir}/{filename}.png"
     output_path = f"{base_dir}/results/{filename}_ascii.png"
-    image = Image.open(image_path).convert("RGB")
-    image_resize = resize_image(image)
-    color_matrix = np.array(image_resize)
-    ascii_matrix = convert_image_to_ascii(image_resize)
+    image = Image.open(image_path)
 
-    DoG = get_difference_of_gaussian(image)
-    DoG.show()
-    high = resize_image(DoG)
-    edge_matrix = detect_edges(high)
+    ascii_image, color_image = convert_image_to_ascii(image)
 
-    final_image = np.where(edge_matrix == " ", ascii_matrix, edge_matrix)
-
-    save_ascii_as_image(final_image, color_matrix)
-    save_as_colored_html(final_image, color_matrix)
+    save_ascii_as_image(ascii_image, color_image)
+    save_as_colored_html(ascii_image, color_image)
 
