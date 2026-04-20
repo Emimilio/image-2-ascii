@@ -34,6 +34,12 @@ def save_as_colored_html(ascii_matrix, color_matrix, output_path="output.html"):
 
 
 def save_ascii_as_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray, output_path: str="output.png"):
+    out_image = draw_image(ascii_matrix, color_matrix)
+    out_image.save(output_path)
+    print(f"Saved ASCII image to {output_path}")
+
+
+def draw_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray) -> Image:
     try:
         font = ImageFont.truetype("Courier", 15)
     except IOError:
@@ -54,5 +60,4 @@ def save_ascii_as_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray, ou
             char = ascii_matrix[y, x]
             draw.text((x * char_width, y * char_height), char, font=font, fill=(r, g, b))
 
-    out_image.save(output_path)
-    print(f"Saved ASCII image to {output_path}")
+    return out_image

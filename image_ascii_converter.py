@@ -1,7 +1,8 @@
 
 import numpy as np
 import numpy.typing as npt
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image 
+from image_exporter import draw_image
 from scipy.ndimage import convolve 
 from skimage.filters import gaussian
 import cv2
@@ -110,34 +111,11 @@ def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
 
 def convert_video_to_ascii(video_path: str, output_path: str):
 
-    video = get_video_frames(video_path)
-    frame0 = video[0]
-    height, width, _ = frame0.shape
-
+    cap = cv2.VideoCapture(video_path)
     codec_id = "mp4v"
     fourcc = cv2.VideoWriter_fourcc(*codec_id)
     out = None
 
-    for frame in video:
-
-        image = Image.fromarray(frame.astype(np.uint8))
-        ascii_image, color_image = convert_image_to_ascii(image)
-        frame_to_write = np.array(draw_image(ascii_image, color_image))
-
-        if out is None:
-            h, w, _ = frame_to_write.shape
-            out = cv2.VideoWriter(output_path, fourcc, 20, (w, h))
-        
-        final_frame = cv2.cvtColor(frame_to_write, cv2.COLOR_RGB2BGR)
-        out.write(final_frame)
-    
-    out.release()
-
-   
-def get_video_frames(video_path: str) -> list:
-
-    frames = []
-    cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         print("Error: Could not open video.")
         exit()
@@ -150,32 +128,18 @@ def get_video_frames(video_path: str) -> list:
             break
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frames.append(frame)
+
+        image = Image.fromarray(frame)
+        ascii_image, color_image = convert_image_to_ascii(image)
+        frame_to_write = np.array(draw_image(ascii_image, color_image))
+
+        if out is None:
+            height, width, _ = frame_to_write.shape
+            out = cv2.VideoWriter(output_path, fourcc, 20, (width, height))
+        
+        final_frame = cv2.cvtColor(frame_to_write, cv2.COLOR_RGB2BGR)
+        out.write(final_frame)
 
     cap.release()
-
-    return frames
-
-
-def draw_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray) -> Image:
-    try:
-        font = ImageFont.truetype("Courier", 15)
-    except IOError:
-        font = ImageFont.load_default()
-
-    char_width, char_height = font.getbbox("A")[2], font.getbbox("A")[3]
-    
-    rows, cols = ascii_matrix.shape
-    out_width = cols * char_width
-    out_height = rows * char_height
-    
-    out_image = Image.new("RGB", (out_width, out_height), color=(0, 0, 0)) # Black background
-    draw = ImageDraw.Draw(out_image)
-
-    for y in range(rows):
-        for x in range(cols):
-            r, g, b = color_matrix[y, x]
-            char = ascii_matrix[y, x]
-            draw.text((x * char_width, y * char_height), char, font=font, fill=(r, g, b))
-
-    return out_image
+    if out is not None:
+        out.release()
