@@ -27,14 +27,8 @@ def resize_image(image: Image) -> Image:
     return image.resize((new_width, new_height), Image.LANCZOS)
 
 def convert_image_to_ascii(image: Image) -> npt.NDArray:
-    image = image.convert("RGB") # convert to RGB just in case the image is HDR (4 dimensions)
-    width, height = image.size
-    
     image_hsv = image.convert("HSV")
-    ascii_matrix = np.full((height, width), " ", dtype=object)
-
-    pixels_hsv = np.array(image_hsv)
-    v_channel = pixels_hsv[:, :, V_IDX]
+    v_channel = np.array(image_hsv)[:, :, V_IDX]
 
     char_idxs = (v_channel / 255 * (len(CHAR_MAP) - 1)).astype(int)
     ascii_matrix = CHAR_MAP[char_idxs]
@@ -66,5 +60,5 @@ def get_image_high_freq(image: Image) -> Image:
     filter to retain the high frequencies
     """
     gray_image = image.convert("L")
-    blurred = gray_image.filter(ImageFilter.GaussianBlur(radius=1))
-    return ImageChops.subtract(gray_image, blurred)
+    blurred = gray_image.filter(ImageFilter.GaussianBlur(radius=2))
+    return ImageChops.difference(gray_image, blurred)
