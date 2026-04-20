@@ -61,7 +61,9 @@ def get_high_freq(image: Image) -> Image:
 
 def get_skimage_high_freq(image : Image) -> Image:
     im = np.array(image)
-    filtered = (gaussian(im, sigma=0.6, channel_axis=-1) * 255).astype(np.uint8)
+    filtered = (gaussian(im, sigma=4, channel_axis=-1) * 255).astype(np.uint8)
 
-    return Image.fromarray(im - filtered).convert("L")
+    final = np.abs(im - filtered)
+
+    return Image.fromarray(final.clip(0, 255).astype(np.uint8)).convert("L")
 
