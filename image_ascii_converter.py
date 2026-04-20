@@ -107,39 +107,3 @@ def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
     ascii_image = np.where(edge_matrix == " ", ascii_matrix, edge_matrix)
 
     return ascii_image, np.array(image_resize)
-
-
-def convert_video_to_ascii(video_path: str, output_path: str):
-
-    cap = cv2.VideoCapture(video_path)
-    codec_id = "mp4v"
-    fourcc = cv2.VideoWriter_fourcc(*codec_id)
-    out = None
-
-    if not cap.isOpened():
-        print("Error: Could not open video.")
-        exit()
-    
-    while True:
-
-        ret, frame = cap.read()
-        if not ret:
-            print("End of video or frame mis read")
-            break
-
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        image = Image.fromarray(frame)
-        ascii_image, color_image = convert_image_to_ascii(image)
-        frame_to_write = np.array(draw_image(ascii_image, color_image))
-
-        if out is None:
-            height, width, _ = frame_to_write.shape
-            out = cv2.VideoWriter(output_path, fourcc, 20, (width, height))
-        
-        final_frame = cv2.cvtColor(frame_to_write, cv2.COLOR_RGB2BGR)
-        out.write(final_frame)
-
-    cap.release()
-    if out is not None:
-        out.release()

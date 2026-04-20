@@ -1,6 +1,7 @@
 
 from PIL import Image 
-from image_ascii_converter import convert_image_to_ascii, detect_edges, resize_image, get_difference_of_gaussian, convert_video_to_ascii
+from image_ascii_converter import convert_image_to_ascii
+from video_ascii_converter import convert_video_to_ascii
 from image_exporter import save_ascii_as_image, save_as_colored_html
 import numpy as np
 
