@@ -2,13 +2,13 @@
 import numpy as np
 import numpy.typing as npt
 from PIL import Image 
-from image_exporter import draw_image
-from scipy.ndimage import convolve 
+from scipy.ndimage import convolve
 from skimage.filters import gaussian
-import cv2
+from skimage import feature
 
-CHAR_MAP = np.array([" ", ".", "i", "c", "o", "P", "O", "?", "@", "■"])
+CHAR_MAP = np.array([" ", ".", "i", "c", "o", "P", "O", "?", "@"])
 EDGE_MAP = np.array(["|", "\\", "-", "/", "|", "\\", "-", "/"])
+IMPROVED_EDGE_MAP = np.array(["▏", "╲", "_", "╱", "▕", "╲", "‾", "╱"])
 V_IDX = 2
 
 GX_SOBEL = np.array([
@@ -62,7 +62,7 @@ def detect_edges(image: Image) -> npt.NDArray:
     edge_matrix = EDGE_MAP[indices]
 
     max_mag = magnitude.max()
-    threshold = max_mag * 0.3
+    threshold = max_mag * 0.0
     edge_matrix[magnitude < threshold] = " "
 
     return edge_matrix
@@ -71,14 +71,13 @@ def apply_sobel_filter(image: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray, np
     gx = convolve(image, GX_SOBEL)
     gy = convolve(image, GY_SOBEL)
     magnitude = np.hypot(gx, gy)
-
     return gx, gy, magnitude
 
 def get_difference_of_gaussian(image: Image, sigma=1) -> Image:
     im = normalize_image(np.array(image.convert("L")))
-    
+
     g_1 = gaussian(im, sigma=sigma)
-    g_2 = gaussian(im, sigma=1.6 * sigma) 
+    g_2 = gaussian(im, sigma=1.6 * sigma)
 
     diff = g_1 - g_2
 
@@ -95,15 +94,18 @@ def get_difference_of_gaussian(image: Image, sigma=1) -> Image:
 
 
 def convert_image_to_ascii(image: Image) -> tuple[npt.NDArray, npt.NDArray]:
-    image = image.convert("RGB") # In case image is HDR (4D)
-    gray_image = image.convert("L")
-    image_resize = resize_image(image)
+    image = image.convert("RGB")
+    image_resized = resize_image(image)
+    image_rgb = image_resized.convert("RGB")
+    gray_image = image_resized.convert("L")
 
-    DoG = get_difference_of_gaussian(image)
-    DoG = resize_image(DoG)
-    edge_matrix = detect_edges(DoG)
+    im = feature.canny(np.array(gray_image), sigma=1)
+    Image.fromarray(im).show()
+    edge_matrix = detect_edges(image_resized)
 
-    ascii_matrix = map_pixel_to_ascii(image_resize)
+    edge_matrix = np.where(im, edge_matrix, " ")
+
+    ascii_matrix = map_pixel_to_ascii(image_resized)
     ascii_image = np.where(edge_matrix == " ", ascii_matrix, edge_matrix)
 
-    return ascii_image, np.array(image_resize)
+    return ascii_image, np.array(image_resized)
