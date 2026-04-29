@@ -22,7 +22,7 @@ if __name__ == "__main__":
     # filename = "mario_clip"
     # video_path = f"{base_video_dir}/{filename}.mp4"
     # output_path = f"{base_video_dir}/results/{filename}_ascii.mp4"
-
+    #
     # convert_video_to_ascii(video_path=video_path, output_path=output_path)
 
 

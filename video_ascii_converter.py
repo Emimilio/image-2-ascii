@@ -7,7 +7,6 @@ from image_ascii_converter import convert_image_to_ascii
 
 
 def convert_video_to_ascii(video_path: str, output_path: str):
-
     cap = cv2.VideoCapture(video_path)
     codec_id = "mp4v"
     fourcc = cv2.VideoWriter_fourcc(*codec_id)
@@ -23,7 +22,7 @@ def convert_video_to_ascii(video_path: str, output_path: str):
 
         ret, frame = cap.read()
         if not ret:
-            print("End of video or frame mis read")
+            print("End of video")
             break
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
