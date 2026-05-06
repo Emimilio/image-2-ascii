@@ -3,9 +3,6 @@ from PIL import ImageDraw, ImageFont, Image
 import numpy.typing as npt
 
 def save_as_colored_html(ascii_matrix, color_matrix, output_path="output.html"):
-    """
-    Creates an HTML file that renders the ASCII art with real colors.
-    """
     html_start = """
     <html>
     <body style="background-color: #121212; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1; letter-spacing: 0;">
@@ -30,8 +27,8 @@ def save_as_colored_html(ascii_matrix, color_matrix, output_path="output.html"):
     
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(full_html)
-    
-    print(f"Done! Open '{output_path}' in your web browser to see the result.")
+
+    print(f"Saved HTML image to {output_path}")
 
 
 def save_ascii_as_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray, output_path: str="output.png"):
@@ -62,3 +59,18 @@ def draw_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray) -> Image:
             draw.text((x * char_width, y * char_height), char, font=font, fill=(r, g, b))
 
     return out_image
+
+def draw_image_to_terminal(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray):
+    lines = []
+    for char_row, color_row in zip(ascii_matrix, color_matrix):
+
+        line_chars = []
+        for char, color in zip(char_row, color_row):
+            r, g, b = color
+            ansi_char = f"\033[38;2;{int(r)};{int(g)};{int(b)}m{char}"
+            line_chars.append(ansi_char)
+
+        lines.append("".join(line_chars) + "\033[0m")
+
+    full_output = "\n".join(lines)
+    print(full_output)
