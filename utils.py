@@ -6,7 +6,6 @@ from scipy.ndimage import convolve
 
 CHAR_MAP = np.array([" ", ".", "i", "c", "o", "P", "O", "?", "@"])
 EDGE_MAP = np.array(["|", "\\", "-", "/", "|", "\\", "-", "/"])
-IMPROVED_EDGE_MAP = np.array(["▏", "╲", "_", "╱", "▕", "╲", "‾", "╱"])
 V_IDX = 2
 
 GX_SOBEL = np.array([
@@ -30,9 +29,10 @@ def normalize_image(array: npt.NDArray) -> npt.NDArray:
 def scale_image_to_255(array: npt.NDArray) -> npt.NDArray:
     return (array * 255).astype(np.uint8)
 
-def resize_image(image: Image) -> Image:
+def resize_image(image: Image, new_width) -> Image:
     width, height = image.size
-    new_width, new_height = (width // 8, height // int(8 * 1.2))
+    aspect_ratio = height / width
+    new_height = int(aspect_ratio * new_width)
 
     return image.resize((new_width, new_height), Image.LANCZOS)
 
