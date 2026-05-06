@@ -6,7 +6,7 @@ from image_exporter import draw_image
 from image_ascii_converter import convert_image_to_ascii
 
 
-def convert_video_to_ascii(video_path: str, output_path: str):
+def convert_video_to_ascii(video_path: str, output_path: str, new_width: int=200, use_edge_detection: bool=True):
     cap = cv2.VideoCapture(video_path)
     codec_id = "mp4v"
     fourcc = cv2.VideoWriter_fourcc(*codec_id)
@@ -28,7 +28,7 @@ def convert_video_to_ascii(video_path: str, output_path: str):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
         image = Image.fromarray(frame)
-        ascii_image, color_image = convert_image_to_ascii(image)
+        ascii_image, color_image = convert_image_to_ascii(image, new_width=new_width, use_edge_detection=use_edge_detection)
         frame_to_write = np.array(draw_image(ascii_image, color_image))
 
         if out is None:
