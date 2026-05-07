@@ -6,7 +6,7 @@ from skimage import feature
 import utils
 
 
-def convert_image_to_ascii(image: Image, new_width: int=200, use_edge_detection: bool=True) -> tuple[npt.NDArray, npt.NDArray]:
+def convert_image_to_ascii(image: Image, new_width: int=150, use_edge_detection: bool=True) -> tuple[npt.NDArray, npt.NDArray]:
     image = image.convert("RGB")
     image_resized = utils.resize_image(image, new_width)
     gray_image = utils.normalize_image(np.array(image_resized.convert("L")))
