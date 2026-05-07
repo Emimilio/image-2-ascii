@@ -92,11 +92,12 @@ python main.py -i ./images/mario.png -f terminal --no-edge
 ```
 python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4 -w 250 
 ```
-### Mario clip:
 
-| Original video                              | Ascii video                                    |
-|--------------------------------------------------|-----------------------------------------------------------|
-| https://github.com/user-attachments/assets/40b2d753-dac1-45c4-aa39-54a821cf25da | https://github.com/user-attachments/assets/e93c9a94-a666-4257-ba5c-11d2a8e4d17c |
+#### Original clip:
+https://github.com/user-attachments/assets/40b2d753-dac1-45c4-aa39-54a821cf25da
+
+#### Ascii clip:
+https://github.com/user-attachments/assets/e93c9a94-a666-4257-ba5c-11d2a8e4d17c
 
 ## References:
 
