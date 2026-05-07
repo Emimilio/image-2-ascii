@@ -49,7 +49,7 @@ def draw_image(ascii_matrix: npt.NDArray, color_matrix: npt.NDArray) -> Image:
     out_width = cols * char_width
     out_height = rows * char_height
     
-    out_image = Image.new("RGB", (out_width, out_height), color=(0, 0, 0)) # Black background
+    out_image = Image.new("RGB", (out_width, out_height), color=(0, 0, 0))
     draw = ImageDraw.Draw(out_image)
 
     for y in range(rows):
