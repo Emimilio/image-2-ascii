@@ -1,8 +1,6 @@
 import argparse
-from PIL import Image
-from image_ascii_converter import convert_image_to_ascii
+from image_ascii_converter import convert_and_save_image_to_ascii
 from video_ascii_converter import convert_video_to_ascii
-from image_exporter import save_ascii_as_image, save_as_colored_html, draw_image_to_terminal
 
 
 def parse_args():
@@ -54,17 +52,6 @@ if __name__ == "__main__":
 
     else:
         try:
-            image = Image.open(args.input_path)
-            ascii_image, color_image = convert_image_to_ascii(image, args.width, args.edge_detection)
-
-            if args.format == 'terminal':
-                draw_image_to_terminal(ascii_image, color_image)
-
-            elif args.format == 'image':
-                save_ascii_as_image(ascii_image, color_image, args.output_path)
-
-            elif args.format == 'html':
-                save_as_colored_html(ascii_image, color_image, args.output_path)
-
+            convert_and_save_image_to_ascii(args.input_path, args.output_path, args.width, args.edge_detection, args.format)
         except Exception as e:
             print(f"Failed to process image: {e}")
