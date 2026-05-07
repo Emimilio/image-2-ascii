@@ -93,6 +93,8 @@ python main.py -i ./images/mario.png -f terminal --no-edge
 python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4 
 ```
 
+For now only `.mp4` videos are supported. To view an exemple got to [./video/results](./video/results).
+
 ## References:
 
 - https://www.youtube.com/watch?v=gg40RWiaHRY
