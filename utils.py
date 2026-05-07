@@ -29,10 +29,13 @@ def normalize_image(array: npt.NDArray) -> npt.NDArray:
 def scale_image_to_255(array: npt.NDArray) -> npt.NDArray:
     return (array * 255).astype(np.uint8)
 
-def resize_image(image: Image, new_width) -> Image:
+def resize_image(image: Image, new_width: int, output_format: str="terminal") -> Image:
     width, height = image.size
     aspect_ratio = height / width
     new_height = int(aspect_ratio * new_width)
+
+    if output_format != "image":
+        new_height = int(new_height * 0.5)
 
     return image.resize((new_width, new_height), Image.LANCZOS)
 
