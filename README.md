@@ -1,3 +1,4 @@
+
 # image-2-ascii
 
 This is a small image to ASCII art converter. Traditional ASCII art converters don't have any edge detection used to make out the outline of objects in the images. This code adds an extra edge detection layer to add contrast to objects in images. To accomplish this, a canny filter and a sobel filter are combined to extract the edges and identify the right ascii character to represent the edge based on the gradient found with the sobel filter. The edges are represented by the following characters `-`,`/`,`\`,`|` and the pixels intensities are represented with the following characters ` `, `.`, `i`, `c`, `o`, `P`, `O`, `?`, `@`.
@@ -91,6 +92,11 @@ python main.py -i ./images/mario.png -f terminal --no-edge
 ```
 python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4 -w 250 
 ```
+### Mario clip:
+
+| Original video                              | Ascii video                                    |
+|--------------------------------------------------|-----------------------------------------------------------|
+| https://github.com/user-attachments/assets/40b2d753-dac1-45c4-aa39-54a821cf25da | https://github.com/user-attachments/assets/e93c9a94-a666-4257-ba5c-11d2a8e4d17c |
 
 ## References:
 
