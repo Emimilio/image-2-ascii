@@ -34,8 +34,11 @@ def resize_image(image: Image, new_width: int, output_format: str="terminal") ->
     aspect_ratio = height / width
     new_height = int(aspect_ratio * new_width)
 
-    if output_format != "image":
+    if output_format == "image":
+        new_height = int(new_height * 0.83)
+    else:
         new_height = int(new_height * 0.5)
+
 
     return image.resize((new_width, new_height), Image.LANCZOS)
 
