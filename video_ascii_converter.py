@@ -29,7 +29,7 @@ def convert_video_to_ascii(video_path: str, output_path: str, new_width: int=150
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image = Image.fromarray(frame)
-        ascii_image, color_image = convert_image_to_ascii(image, new_width=new_width, use_edge_detection=use_edge_detection)
+        ascii_image, color_image = convert_image_to_ascii(image, new_width=new_width, use_edge_detection=use_edge_detection, output_format="image")
         frame_to_write = np.array(draw_image(ascii_image, color_image))
 
         if out is None:
