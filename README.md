@@ -59,21 +59,38 @@ python main.py -i ./images/flat_iron.png -f terminal
 
 
 
-| Original Mario                            | Ascii Mario                                          |
-|-------------------------------------------|------------------------------------------------------|
-| ![original flat iron](./images/mario.png) | ![ascii flat iron](./images/results/mario_ascii.svg) |
+| Original Mario                        | Ascii Mario                                      |
+|---------------------------------------|--------------------------------------------------|
+| ![original mario](./images/mario.png) | ![ascii mario](./images/results/mario_ascii.svg) |
 
 ### Results without edge detection:
 
 #### Flat Iron:
-| With edge detection                                         | Without edge detection                                          |
-|-------------------------------------------------------------|-----------------------------------------------------------------|
-| ![original flat iron](./images/results/flat_iron_ascii.svg) | ![ascii flat iron](./images/results/flat_iron_ascii_noedge.svg) |
+
+```
+python main.py -i ./images/flat_iron.png -f terminal --no-edge
+```
+
+| With edge detection                                      | Without edge detection                                            |
+|----------------------------------------------------------|-------------------------------------------------------------------|
+| ![ascii flat iron](./images/results/flat_iron_ascii.svg) | ![flat iron no edge](./images/results/flat_iron_ascii_noedge.svg) |
 
 #### Mario:
-| With edge detection                                     | Without edge detection                                      |
-|---------------------------------------------------------|-------------------------------------------------------------|
-| ![original flat iron](./images/results/mario_ascii.svg) | ![ascii flat iron](./images/results/mario_ascii_noedge.svg) |
+
+```
+python main.py -i ./images/mario.png -f terminal --no-edge
+```
+
+| With edge detection                              | Without edge detection                                    |
+|--------------------------------------------------|-----------------------------------------------------------|
+| ![ascii mario](./images/results/mario_ascii.svg) | ![mario no edge](./images/results/mario_ascii_noedge.svg) |
+
+
+### Ascii art on video:
+
+```
+python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4 -w 250 
+```
 
 ## References:
 
