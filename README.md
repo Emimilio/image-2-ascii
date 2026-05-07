@@ -43,7 +43,7 @@ python main.py --input_path --output_path --format --width --edge
 
 - `--input_path`: Path to input video or image file (most file types supported)
 - `--output_path`: Path to save the output file (required for 'image' or 'html' formats)
-- `--format`: 'terminal' (print to console), 'image' (save as png), or 'html' (save as webpage) (default: terminal)
+- `--format`: `terminal` (print to console), `image` (save as png), or `html` (save as webpage) (default: terminal)
 - `--width`: Width of output in characters (default: 150)
 - `--edge`: Enable or disable edge detection (default: True). Use `--no-edge` to disable
 
