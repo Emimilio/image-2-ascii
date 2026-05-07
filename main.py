@@ -17,10 +17,15 @@ def parse_args():
     parser.add_argument("-f", "--format", type=str, choices=['terminal', 'image', 'html'], default='terminal',
                         help="Output format: 'terminal' (print to console), 'image' (save as png), or 'html' (save as webpage)")
 
-    parser.add_argument("-w", "--width", type=int, default=200, help="Width of output in characters")
+    parser.add_argument("-w", "--width", type=int, default=150, help="Width of output in characters")
 
-    parser.add_argument("-d", "--edge_detection", action="store_true", default=True,
-                        help="Use edge detection with Canny filter (default: True)")
+    parser.add_argument(
+        "--edge",
+        dest="edge_detection",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Enable or disable edge detection (default: True)"
+    )
 
     return parser.parse_args()
 
@@ -40,7 +45,6 @@ if __name__ == "__main__":
     print(f"--- Processing: {args.input_path} ---")
 
     if is_video(args.input_path):
-        print("Detected Video Format...")
         convert_video_to_ascii(
             video_path=args.input_path,
             output_path=args.output_path,
@@ -49,7 +53,6 @@ if __name__ == "__main__":
         )
 
     else:
-        print("Detected Image Format...")
         try:
             image = Image.open(args.input_path)
             ascii_image, color_image = convert_image_to_ascii(image, args.width, args.edge_detection)
