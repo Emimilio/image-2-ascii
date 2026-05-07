@@ -50,18 +50,30 @@ python main.py --input_path --output_path --format --width --edge
 ### Normal usage exemple:
 
 ```
-python main.py -i ./images/flat_iron.png -o ./images/results/flat_iron_ascii.png -f image
+python main.py -i ./images/flat_iron.png -f terminal
 ```
 
 | Original Flat Iron                            | Ascii Flat Iron                                          |
 |-----------------------------------------------|----------------------------------------------------------|
-| ![original flat iron](./images/flat_iron.png) | ![ascii flat iron](./images/results/flat_iron_ascii.png) |
+| ![original flat iron](./images/flat_iron.png) | ![ascii flat iron](./images/results/flat_iron_ascii.svg) |
 
 
 
 | Original Mario                            | Ascii Mario                                          |
 |-------------------------------------------|------------------------------------------------------|
 | ![original flat iron](./images/mario.png) | ![ascii flat iron](./images/results/mario_ascii.svg) |
+
+### Results without edge detection:
+
+#### Flat Iron:
+| With edge detection                                         | Without edge detection                                          |
+|-------------------------------------------------------------|-----------------------------------------------------------------|
+| ![original flat iron](./images/results/flat_iron_ascii.svg) | ![ascii flat iron](./images/results/flat_iron_ascii_noedge.svg) |
+
+#### Mario:
+| With edge detection                                     | Without edge detection                                      |
+|---------------------------------------------------------|-------------------------------------------------------------|
+| ![original flat iron](./images/results/mario_ascii.svg) | ![ascii flat iron](./images/results/mario_ascii_noedge.svg) |
 
 ## References:
 

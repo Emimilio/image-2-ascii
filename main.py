@@ -13,9 +13,9 @@ def parse_args():
                         help="Path to save the output file (required for 'image' or 'html' formats)")
 
     parser.add_argument("-f", "--format", type=str, choices=['terminal', 'image', 'html'], default='terminal',
-                        help="Output format: 'terminal' (print to console), 'image' (save as png), or 'html' (save as webpage)")
+                        help="Eather 'terminal' (print to console), 'image' (save as png), or 'html' (save as webpage)")
 
-    parser.add_argument("-w", "--width", type=int, default=150, help="Width of output in characters")
+    parser.add_argument("-w", "--width", type=int, default=150, help="Width of output in characters (default: 150)")
 
     parser.add_argument(
         "--edge",
@@ -39,8 +39,6 @@ if __name__ == "__main__":
     if args.format in ['image', 'html'] and not args.output_path:
         print(f"Error: --output_path is required when using format '{args.format}'")
         exit(1)
-
-    print(f"--- Processing: {args.input_path} ---")
 
     if is_video(args.input_path):
         convert_video_to_ascii(
