@@ -97,7 +97,9 @@ python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4
 https://github.com/user-attachments/assets/40b2d753-dac1-45c4-aa39-54a821cf25da
 
 #### Ascii clip:
-https://github.com/user-attachments/assets/e93c9a94-a666-4257-ba5c-11d2a8e4d17c
+https://github.com/user-attachments/assets/eb945ce8-2ac7-46a0-88b0-0650201b0d50
+
+
 
 ## References:
 
