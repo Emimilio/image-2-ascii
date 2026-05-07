@@ -90,7 +90,7 @@ python main.py -i ./images/mario.png -f terminal --no-edge
 ### Ascii art on video:
 
 ```
-python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4 -w 250 
+python main.py -i ./video/mario_clip.mp4 -o ./video/results/mario_clip_ascii.mp4 
 ```
 
 #### Original clip:
