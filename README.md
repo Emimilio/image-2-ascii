@@ -12,7 +12,7 @@ This project was made in collaboration with [Edwin Lemelin](https://github.com/E
 python -m venv .venv
 ```
 
-### Activation the environment:
+### Activate the environment:
 - Command for Windows:
  ```
 .venv\Scripts\activate
