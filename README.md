@@ -5,6 +5,12 @@ This is a small image to ASCII art converter. Traditional ASCII art converters d
 
 This project was made in collaboration with [Edwin Lemelin](https://github.com/Edwin15571)
 
+
+| Original Mario                        | Ascii Mario                                      |
+|---------------------------------------|--------------------------------------------------|
+| ![original mario](./images/mario.png) | ![ascii mario](./images/results/mario_ascii.svg) |
+
+
 ## Setup:
 
 ### Create a virtual envirment
